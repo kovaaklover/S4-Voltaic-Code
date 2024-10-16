@@ -355,7 +355,7 @@ header1 = [header[0]] + header[97:]
 # GOOGLE SHEETS API
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
-# JSON CREDENTIAL FILE PATH GOOD
+# JSON CREDENTIAL FILE PATH
 creds_dict = json.loads(os.getenv('GSPREAD_CREDENTIALS'))
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
