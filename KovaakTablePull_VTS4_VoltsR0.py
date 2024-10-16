@@ -5,6 +5,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import json
+import os
 
 # KOVAAKs LEADERBOARD IDs
 Leaderboard_ID = [
@@ -354,7 +356,8 @@ header1 = [header[0]] + header[97:]
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
 # JSON CREDENTIAL FILE PATH
-creds = ServiceAccountCredentials.from_json_keyfile_name('C:\\Users\\jmolv\\Documents\\Python\\light-cathode-438221-f7-2204f7f61353.json', scope)
+creds_dict = json.loads(os.getenv('GSPREAD_CREDENTIALS'))
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
 # AUTHORIZE THE CLIENT
 client = gspread.authorize(creds)
