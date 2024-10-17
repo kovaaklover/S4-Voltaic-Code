@@ -81,7 +81,7 @@ def process_leaderboard(leaderboard_id, page, session, itera, Count, score_lock,
 
                     # IF STEAM ID WAS NOT YET SEEN CREATE KEY AND SET VOLTS TO ZERO
                     if Steam_ID not in Score_Dic:
-                        Score_Dic[Steam_ID] = [0] * (142)
+                        Score_Dic[Steam_ID] = [0] * (147)
                         Score_Dic[Steam_ID][99] = Steam_Name
 
                     # FOR NOVICE LEADERBOARDS
@@ -284,10 +284,46 @@ for key, values in Score_Dic.items():
     if values[100] > 0 or values[101] > 0 or values[102] > 0:
         Count += 1
 
-# SORT EASY VOLTS THEN VOLTS
+# SORT NOVICE VOLTS THEN INTERMEDIATE VOLTS THEN ADVANCED COMPLETE POINTS
 Score_Dic_S = dict(sorted(Score_Dic.items(), key=lambda item: (item[1][98], item[1][97], item[1][96]), reverse=True))
+Per = 0
+for key, values in Score_Dic_S.items():
+    if values[100] > 0 or values[101] > 0 or values[102] > 0:
+        values[106] = Per+1
+        values[107] = round(1 - Per / Count, 6)
+        Per += 1
 
+        # IF GREATER THAN GOLD MAX GOLD ENERGY
+     #   if values[100] > 400:
+     #       values[142] = 400
+     #   else:
+        values[142] = values[100]
 
+        # IF GREATER THAN MASTER MAX MASTER ENERGY
+    #    if values[101] > 800:
+   #         values[143] = 800
+   #     else:
+        values[143] = values[101]
+        values[144] = values[102]
+        
+        # IF LESS THAN MASTER AND GRANDMASTER SET ADVANCED ENERGY TO ZERO
+        if values[101] < 800 and values[102] < 900:
+            values[144] = 0
+
+        # IF LESS THAN GOLD AND MASTER SET MASTER AND GRANDMASTER ENERGY TO ZERO
+        if values[100] < 400 and values[101] < 800 and values[102] < 900:
+            values[143] = 0
+            values[144] = 0
+
+# SORT NOVICE VOLTS THEN INTERMEDIATE VOLTS THEN ADVANCED ENERGY
+Score_Dic_S = dict(sorted(Score_Dic.items(), key=lambda item: (item[1][144], item[1][143], item[1][142]), reverse=True))
+Per = 0
+for key, values in Score_Dic_S.items():
+    if values[100] > 0 or values[101] > 0 or values[102] > 0:
+        values[145] = Per+1
+        values[146] = round(1 - Per / Count, 6)
+        Per += 1
+    
 header = ['PlayerID',
 'VT Pasu Rasp Novice','VT Bounceshot Novice','VT 1w6ts Rasp Novice','VT Multiclick 120 Novice',
 'N/A','N/A','VT Smoothbot Novice','VT PreciseOrb Novice',
@@ -330,6 +366,8 @@ header = ['PlayerID',
 'VT AngleStrafe S','VT ArcStrafe S','VT Smoothbot S','VT PreciseOrb S',
 'VT Plaza S','VT Air S','VT PatStrafe S','VT AirStrafe S',
 'VT psalmTS S','VT skyTS S','VT evaTS S','VT bounceTS S',
+
+'ADJ N E', 'ADJ I E', 'ADJ A E', 'E Rank', 'E Percentage',
 ]
 
 header1 = [header[0]] + header[97:]
@@ -339,11 +377,8 @@ header1 = [header[0]] + header[97:]
 #with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
 #    writer = csv.writer(file)
 #    writer.writerow(header)
-#    Per = 0
 #    for key, values in Score_Dic_S.items():
 #        if values[100] > 0 or values[101] > 0 or values[102] > 0:
-#            values[106] = Per+1
-#            values[107] = round(1 - Per / Count, 6)
 #            if values[99] is not None:
 #                values[99] = values[99].encode('ascii', 'ignore').decode('ascii')
 #            else:
@@ -372,12 +407,9 @@ sheet.clear()
 sheet.append_row(header1)
 
 # SEND DATA FROM DICTIONARY TO ARRAY
-Per = 0
 rows_to_update = []
 for key, values in Score_Dic_S.items():
     if values[100] > 0 or values[101] > 0 or values[102] > 0:
-        values[106] = Per+1
-        values[107] = round(1 - Per / Count, 6)
         if values[99] is not None:
             values[99] = values[99].encode('ascii', 'ignore').decode('ascii')
         else:
@@ -387,7 +419,6 @@ for key, values in Score_Dic_S.items():
 
         # Add the row to the list
         rows_to_update.append([key] + values)
-        Per += 1
 
 # UPDATE GOOGLE SHEET WITH ALL ARRAY DATA
 start_cell = 'A2'
