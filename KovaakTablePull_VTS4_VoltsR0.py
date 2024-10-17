@@ -129,8 +129,9 @@ def process_leaderboard(leaderboard_id, page, session, itera, Count, score_lock,
                                 Score_Dic[Steam_ID][Count+16] = Score
                                 VoltsI = 0 + (Score - 0) * 500 / (RankReq[Count][iii] - 0)
                                 Score_Dic[Steam_ID][48 + Count+16] = VoltsI
-
-                        Score_Dic[Steam_ID][97] += VoltsI/16
+                        
+                        if Count !=3 and Count !=4 and Count !=10 and Count !=11: 
+                            Score_Dic[Steam_ID][97] += VoltsI/12
 
                     # FOR ADVANCED LEADERBOARD
                     elif itera == 3:
@@ -150,8 +151,9 @@ def process_leaderboard(leaderboard_id, page, session, itera, Count, score_lock,
                                 Score_Dic[Steam_ID][Count+32] = Score
                                 VoltsA = 0 + (Score - 0) * 900 / (RankReq[Count][iii] - 0)
                                 Score_Dic[Steam_ID][48 + Count+32] = VoltsA
-
-                        Score_Dic[Steam_ID][98] += VoltsA/16
+                        
+                        if Count !=3 and Count !=4 and Count !=10 and Count !=11: 
+                            Score_Dic[Steam_ID][98] += VoltsA/12
 
             except KeyError:
                 continue
