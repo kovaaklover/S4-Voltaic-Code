@@ -310,10 +310,10 @@ for key, values in Score_Dic_S.items():
         if values[101] < 800 and values[102] < 900:
             values[144] = 0
 
-        # IF LESS THAN GOLD AND MASTER SET MASTER AND GRANDMASTER ENERGY TO ZERO
-        if values[100] < 400 and values[101] < 800 and values[102] < 900:
+        # IF LESS THAN GOLD AND PLAT SET MASTER ENERGY TO ZERO
+        if values[100] < 400 and values[101] < 500:
             values[143] = 0
-            values[144] = 0
+
 
 # SORT NOVICE VOLTS THEN INTERMEDIATE VOLTS THEN ADVANCED ENERGY
 Score_Dic_S = dict(sorted(Score_Dic.items(), key=lambda item: (item[1][144], item[1][143], item[1][142]), reverse=True))
