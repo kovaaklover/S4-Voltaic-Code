@@ -8,7 +8,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import json
 import os
 
-# KOVAAKs LEADERBOARD IDs
+# KOVAAKs LEADERBOARD ID
 Leaderboard_ID = [
     29489, 24975, 29483, 24969,
     0, 0, 24967, 24968,
